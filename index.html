@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Redirecionando para WhatsApp...</title>
+
+  <!-- Evita cache em alguns cenários -->
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .box{max-width:560px;margin:0 auto;border:1px solid #ddd;border-radius:12px;padding:16px}
+    .muted{color:#666;font-size:14px}
+    .btn{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:10px;border:1px solid #ddd;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Redirecionando para o WhatsApp…</h2>
+    <p class="muted">Se não abrir automaticamente, use o botão abaixo.</p>
+    <a id="fallback" class="btn" href="#">Abrir WhatsApp</a>
+  </div>
+
+  <script>
+    // ==========================================================
+    // ✅ 1) EDITE OS NÚMEROS AQUI (DDI+DDD+número, só dígitos)
+    // ==========================================================
+    const WHATS = [
+      "5562981345678",
+      "5562981345679"
+    ];
+
+    // ==========================================================
+    // ✅ 2) CONFIGURAÇÃO
+    // ==========================================================
+    const STORAGE_KEY = "wa_rotator_index_v1";
+    const BASE_URL = "https://wa.me/"; // abre conversa
+
+    function nextIndex(total) {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const current = Number.isFinite(parseInt(raw, 10)) ? parseInt(raw, 10) : 0;
+
+      // escolhe o atual e já prepara o próximo
+      const chosen = current % total;
+      const next = (chosen + 1) % total;
+
+      localStorage.setItem(STORAGE_KEY, String(next));
+      return chosen;
+    }
+
+    function go() {
+      if (!Array.isArray(WHATS) || WHATS.length === 0) {
+        document.querySelector("h2").textContent = "Configuração inválida.";
+        return;
+      }
+
+      const idx = nextIndex(WHATS.length);
+      const phone = WHATS[idx].replace(/\D/g, ""); // garante só dígitos
+      const url = BASE_URL + phone;
+
+      // botão fallback
+      const a = document.getElementById("fallback");
+      a.href = url;
+
+      // redireciona
+      window.location.replace(url);
+    }
+
+    go();
+  </script>
+</body>
+</html>
