@@ -26,29 +26,58 @@
 
   <script>
     // ==========================================================
-    // ✅ 1) EDITE OS NÚMEROS AQUI (DDI+DDD+número, só dígitos)
+    // ✅ 1) CONTATOS (DDI+DDD+número, só dígitos) — SORTEIO ALEATÓRIO
     // ==========================================================
     const WHATS = [
-      "5564981116527",
-      "5562984447388"
+      // Adolfo
+      "5562994823777",
+      // Cláudio
+      "5562999361406",
+      // Márcio
+      "5564999336263",
+      // Matheus
+      "5562998666640",
+      // Nádia
+      "5562995036388",
+      // Paulo
+      "5562991998645",
+      // Nathallia
+      "5562981452450",
+      // Ana Thereza
+      "5562993135691",
+      // Emerson
+      "5562983241648",
+      // Marcelo
+      "5562996009120",
+      // Nayara
+      "5561992894247",
+      // Daniel
+      "5562981690883",
+      // Marcos
+      "5562996171972",
+      // Maria Célia
+      "5562981552886",
+      // Vinicius
+      "5553999687256",
+      // Jucilene
+      "5562982162780",
+      // Solange
+      "5562996042551",
+      // Ana
+      "5562982161255",
+      // Fernanda
+      "5562998239494",
+      // Ronaldo
+      "5562994364279"
     ];
 
     // ==========================================================
     // ✅ 2) CONFIGURAÇÃO
     // ==========================================================
-    const STORAGE_KEY = "wa_rotator_index_v1";
     const BASE_URL = "https://wa.me/"; // abre conversa
 
-    function nextIndex(total) {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      const current = Number.isFinite(parseInt(raw, 10)) ? parseInt(raw, 10) : 0;
-
-      // escolhe o atual e já prepara o próximo
-      const chosen = current % total;
-      const next = (chosen + 1) % total;
-
-      localStorage.setItem(STORAGE_KEY, String(next));
-      return chosen;
+    function pickRandomIndex(total) {
+      return Math.floor(Math.random() * total); // uniforme
     }
 
     function go() {
@@ -57,8 +86,8 @@
         return;
       }
 
-      const idx = nextIndex(WHATS.length);
-      const phone = WHATS[idx].replace(/\D/g, ""); // garante só dígitos
+      const idx = pickRandomIndex(WHATS.length);
+      const phone = String(WHATS[idx]).replace(/\D/g, ""); // garante só dígitos
       const url = BASE_URL + phone;
 
       // botão fallback
